@@ -6,6 +6,12 @@ provider:
   name: aws
   runtime: python3.9
   region: us-east-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:PutItem
+        - dynamodb:Scan
+      Resource: "arn:aws:dynamodb:us-east-1:975049937423:table/favorites"
   
 
   environment:
@@ -55,7 +61,7 @@ resources: #"CREACION DE TABLAS..."
           - AttributeName: org_id
             KeyType: HASH
           - AttributeName: favourite_org_id
-            KeyType: HASH
+            KeyType: RANGE
         ProvisionedThroughput:
           ReadCapacityUnits: 5
           WriteCapacityUnits: 5
@@ -88,8 +94,8 @@ functions: #"CREACION DE FUNCIONES..."
               - dynamodb:PutItem
             
             Resource:
-              - "arn:aws:dynamodb:us-east-1:123456789012:table/companies"
-              - "arn:aws:dynamodb:us-east-1:123456789012:table/favorites"
+              - "arn:aws:dynamodb:us-east-1:975049937423:table/companies"
+              - "arn:aws:dynamodb:us-east-1:975049937423:table/favorites"
   
   get_all:
     handler: favorites/get_favorites.get_favorites
@@ -106,8 +112,8 @@ functions: #"CREACION DE FUNCIONES..."
               - dynamodb:Scan
              
             Resource:
-              - "arn:aws:dynamodb:us-east-1:123456789012:table/companies"
-              - "arn:aws:dynamodb:us-east-1:123456789012:table/favorites"
+              - "arn:aws:dynamodb:us-east-1:975049937423:table/companies"
+              - "arn:aws:dynamodb:us-east-1:975049937423:table/favorites"
   
 
 

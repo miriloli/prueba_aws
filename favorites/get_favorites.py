@@ -8,10 +8,10 @@ dynamodb = boto3.resource('dynamodb')
 def get_favorites(event, context):
     table = dynamodb.Table(os.environ['DYNAMODB_TABLE'])
 
-    # fetch todo from the database
-    result = table.get_item(
+    # fetch from the database
+    result = table.query(
         Key={
-            'id': event['pathParameters']['id']
+            'org_id': event['pathParameters']['id']
         }
     )
 

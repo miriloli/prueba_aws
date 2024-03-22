@@ -1,13 +1,113 @@
-org: miriloli
-app: aws
-service: aws
+service: apiAws
 
-frameworkVersion: '3'
+frameworkVersion: "3"
 
 provider:
   name: aws
   runtime: python3.9
+  region: us-east-1
+  
 
-functions:
-  hello:
-    handler: handler.hello
+  environment:
+    DYNAMODB_TABLE: favorites
+  
+ 
+resources: #"CREACION DE TABLAS..."
+  Resources:
+    CompaniesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: companies
+        AttributeDefinitions:
+          - AttributeName: companyId
+            AttributeType: S
+          - AttributeName: companyName
+            AttributeType: S
+        KeySchema:
+          - AttributeName: companyId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+        GlobalSecondaryIndexes:
+          - IndexName: CompanyNameIndex
+            KeySchema:
+              - AttributeName: companyName
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+            ProvisionedThroughput:
+              ReadCapacityUnits: 5
+              WriteCapacityUnits: 5
+
+    FavoritesTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: favorites
+        AttributeDefinitions:
+          - AttributeName: org_id
+            AttributeType: S
+          - AttributeName: favourite_org_id
+            AttributeType: S
+          - AttributeName: date
+            AttributeType: S
+        KeySchema:
+          - AttributeName: org_id
+            KeyType: HASH
+          - AttributeName: favourite_org_id
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+        GlobalSecondaryIndexes:
+        - IndexName: dateIndex
+          KeySchema:
+            - AttributeName: date
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 5
+            WriteCapacityUnits: 5
+   
+       
+
+functions: #"CREACION DE FUNCIONES..."
+  create:
+    handler: favorites/add_favorite.add_favorite
+    events:
+      - http:
+          path: companies/{id}/favorites
+          method: post
+          cors: true
+    iam:
+      role:
+        statements:
+          - Effect: Allow
+            Action:
+              - dynamodb:PutItem
+            
+            Resource:
+              - "arn:aws:dynamodb:us-east-1:123456789012:table/companies"
+              - "arn:aws:dynamodb:us-east-1:123456789012:table/favorites"
+  
+  get_all:
+    handler: favorites/get_favorites.get_favorites
+    events:
+      - http:
+          path: companies/{id}/favorites
+          method: get
+          cors: true
+    iam:
+      role:
+        statements:
+          - Effect: Allow
+            Action:
+              - dynamodb:Scan
+             
+            Resource:
+              - "arn:aws:dynamodb:us-east-1:123456789012:table/companies"
+              - "arn:aws:dynamodb:us-east-1:123456789012:table/favorites"
+  
+
+

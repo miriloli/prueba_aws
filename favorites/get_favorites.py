@@ -3,23 +3,28 @@ import json
 
 from favorites import decimalencoder
 import boto3
+from boto3.dynamodb.conditions import Key
 dynamodb = boto3.resource('dynamodb')
 
 def get_favorites(event, context):
     table = dynamodb.Table(os.environ['DYNAMODB_TABLE'])
 
-    # fetch from the database
+    
+    org_id = event['pathParameters']['id']
+
+    
     result = table.query(
-        Key={
-            'org_id': event['pathParameters']['id']
-        }
+        
+        KeyConditionExpression=Key('org_id').eq(org_id)
     )
 
-    # create a response
+    
+    items = result.get('Items', [])
+
+    
     response = {
         "statusCode": 200,
-        "body": json.dumps(result['Item'],
-                           cls=decimalencoder.DecimalEncoder)
+        "body": json.dumps(items, cls=decimalencoder.DecimalEncoder)
     }
 
     return response

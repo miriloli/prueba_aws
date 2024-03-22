@@ -55,7 +55,7 @@ resources: #"CREACION DE TABLAS..."
           - AttributeName: org_id
             KeyType: HASH
           - AttributeName: favourite_org_id
-            KeyType: RANGE
+            KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 5
           WriteCapacityUnits: 5

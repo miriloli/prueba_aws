@@ -41,7 +41,7 @@ Replace `{id}` with the desired company ID. In the request body, provide the fav
    }
 ```
 
-## [Postman Collection](link_to_postman_collection)
+## [Postman Collection](./CollectionBackAWS.postman_collection.json)
 
 The Postman collection provides examples of requests to interact with the API. You can import it into Postman to easily test the different functionalities.
 

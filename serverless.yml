@@ -5,13 +5,13 @@ frameworkVersion: "3"
 provider:
   name: aws
   runtime: python3.9
-  region: us-east-1
+  region: eu-north-1
   iamRoleStatements:
     - Effect: Allow
       Action:
         - dynamodb:PutItem
         - dynamodb:Query
-      Resource: "arn:aws:dynamodb:us-east-1:975049937423:table/favorites"
+      Resource: "arn:aws:dynamodb:eu-north-1:975049937423:table/favorites"
   
 
   environment:
@@ -94,8 +94,8 @@ functions: #"CREACION DE FUNCIONES..."
               - dynamodb:PutItem
             
             Resource:
-              - "arn:aws:dynamodb:us-east-1:975049937423:table/companies"
-              - "arn:aws:dynamodb:us-east-1:975049937423:table/favorites"
+              
+              - "arn:aws:dynamodb:eu-north-1:975049937423:table/favorites"
   
   get_all:
     handler: favorites/get_favorites.get_favorites
@@ -112,8 +112,8 @@ functions: #"CREACION DE FUNCIONES..."
               - dynamodb:Scan
              
             Resource:
-              - "arn:aws:dynamodb:us-east-1:975049937423:table/companies"
-              - "arn:aws:dynamodb:us-east-1:975049937423:table/favorites"
+        
+              - "arn:aws:dynamodb:eu-north-1:975049937423:table/favorites"
   
 
 

@@ -36,9 +36,9 @@ Replace `{id}` with the desired company ID. In the request body, provide the fav
 
    POST https://ng5m0uh5s7.execute-api.eu-north-1.amazonaws.com/dev/companies/1/favorites
 
-{
-"favourite_org_id": "9"
-}
+   {
+      "favourite_org_id": "9"
+   }
 ```
 
 ## [Postman Collection](link_to_postman_collection)

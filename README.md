@@ -1,82 +1,76 @@
-<!--
-title: 'AWS Python Example'
-description: 'This template demonstrates how to deploy a Python function running on AWS Lambda using the traditional Serverless Framework.'
-layout: Doc
-framework: v3
-platform: AWS
-language: python
-priority: 2
-authorLink: 'https://github.com/serverless'
-authorName: 'Serverless, inc.'
-authorAvatar: 'https://avatars1.githubusercontent.com/u/13742415?s=200&v=4'
--->
+# AWS API Project Documentation
 
+## Project Description
 
-# Serverless Framework AWS Python Example
+The AWS API project is a REST API developed using the AWS Serverless service. It provides functionalities to manage company favorites.
 
-This template demonstrates how to deploy a Python function running on AWS Lambda using the traditional Serverless Framework. The deployed function does not include any event definitions as well as any kind of persistence (database). For more advanced configurations check out the [examples repo](https://github.com/serverless/examples/) which includes integrations with SQS, DynamoDB or examples of functions that are triggered in `cron`-like manner. For details about configuration of specific `events`, please refer to our [documentation](https://www.serverless.com/framework/docs/providers/aws/events/).
+## Usage Instructions
 
-## Usage
+### Get All Favorites of a Company
 
-### Deployment
+To get all favorites of a company, make a GET request to the following URL:
 
-In order to deploy the example, you need to run the following command:
+[https://ng5m0uh5s7.execute-api.eu-north-1.amazonaws.com/dev/companies/{id}/favorites](https://ng5m0uh5s7.execute-api.eu-north-1.amazonaws.com/dev/companies/{id}/favorites)
 
-```
-$ serverless deploy
-```
+Replace `{id}` with the desired company ID (1-10).
 
-After running deploy, you should see output similar to:
+#### Request Example
 
 ```bash
-Deploying aws-python-project to stage dev (us-east-1)
+GET https://ng5m0uh5s7.execute-api.eu-north-1.amazonaws.com/dev/companies/1/favorites
+´´´
+### Add a Favorite to a Company
 
-✔ Service deployed to stack aws-python-project-dev (112s)
+To add a favorite to a company, make a POST request to the following URL:
 
-functions:
-  hello: aws-python-project-dev-hello (1.5 kB)
-```
+[https://ng5m0uh5s7.execute-api.eu-north-1.amazonaws.com/dev/companies/{id}/favorites](https://ng5m0uh5s7.execute-api.eu-north-1.amazonaws.com/dev/companies/{id}/favorites)
 
-### Invocation
+Replace `{id}` with the desired company ID. In the request body, provide the favorite data in JSON format.
 
-After successful deployment, you can invoke the deployed function by using the following command:
+#### Request Example
 
 ```bash
-serverless invoke --function hello
-```
+POST https://ng5m0uh5s7.execute-api.eu-north-1.amazonaws.com/dev/companies/1/favorites
 
-Which should result in response similar to the following:
-
-```json
 {
-    "statusCode": 200,
-    "body": "{\"message\": \"Go Serverless v3.0! Your function executed successfully!\", \"input\": {}}"
+"favourite_org_id": "9"
 }
-```
+´´´
 
-### Local development
+## [Postman Collection](link_to_postman_collection)
+The Postman collection provides examples of requests to interact with the API. You can import it into Postman to easily test the different functionalities.
 
-You can invoke your function locally by using the following command:
+## DynamoDB Tables
+The project uses two DynamoDB tables:
 
-```bash
-serverless invoke local --function hello
-```
+1. **CompaniesTable**: Stores information about companies.
+   - **Attributes**: companyId (HASH), companyName
+   - **Global Secondary Indexes**: CompanyNameIndex (HASH)
 
-Which should result in response similar to the following:
+2. **FavoritesTable**: Stores information about company favorites.
+   - **Attributes**: org_id (HASH), favourite_org_id (RANGE), date
+   - **Global Secondary Indexes**: dateIndex (HASH)
 
-```
-{
-    "statusCode": 200,
-    "body": "{\"message\": \"Go Serverless v3.0! Your function executed successfully!\", \"input\": {}}"
-}
-```
+## Project Configuration
 
-### Bundling dependencies
+### Service Details
+- **Service Name**: apiAws
+- **Serverless Framework Version**: 3
+- **Provider**: AWS
+- **Region**: eu-north-1
 
-In case you would like to include third-party dependencies, you will need to use a plugin called `serverless-python-requirements`. You can set it up by running the following command:
+### Functions
+#### Create Favorite
+- **Handler**: favorites/add_favorite.add_favorite
+- **HTTP Route**: POST /companies/{id}/favorites
+- **IAM Permissions**: Access to dynamodb:PutItem on the favorites table
 
-```bash
-serverless plugin install -n serverless-python-requirements
-```
+#### Get All Favorites
+- **Handler**: favorites/get_favorites.get_favorites
+- **HTTP Route**: GET /companies/{id}/favorites
+- **IAM Permissions**: Access to dynamodb:Scan on the favorites table
 
-Running the above will automatically add `serverless-python-requirements` to `plugins` section in your `serverless.yml` file and add it as a `devDependency` to `package.json` file. The `package.json` file will be automatically created if it doesn't exist beforehand. Now you will be able to add your dependencies to `requirements.txt` file (`Pipfile` and `pyproject.toml` is also supported but requires additional configuration) and they will be automatically injected to Lambda package during build process. For more details about the plugin's configuration, please refer to [official documentation](https://github.com/UnitedIncome/serverless-python-requirements).
+## Author
+This project was developed by Miriam Gallardo González-Amor.
+
+Thank you for using the AWS API! If you have any questions or issues, feel free to contact us.

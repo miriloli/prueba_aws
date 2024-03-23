@@ -1,0 +1,69 @@
+{
+	"info": {
+		"_postman_id": "3ce845b1-c091-4e23-98eb-5e18c54f43e4",
+		"name": "CollectionBackAWS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33151746"
+	},
+	"item": [
+		{
+			"name": "getAllFavorites",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://ng5m0uh5s7.execute-api.eu-north-1.amazonaws.com/dev/companies/1/favorites",
+					"protocol": "https",
+					"host": [
+						"ng5m0uh5s7",
+						"execute-api",
+						"eu-north-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"companies",
+						"1",
+						"favorites"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addFavorites",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\r\n    \"favourite_org_id\": \"9\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://ng5m0uh5s7.execute-api.eu-north-1.amazonaws.com/dev/companies/1/favorites",
+					"protocol": "https",
+					"host": [
+						"ng5m0uh5s7",
+						"execute-api",
+						"eu-north-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"dev",
+						"companies",
+						"1",
+						"favorites"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
